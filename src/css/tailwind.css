@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Anton&display=swap'); */
 
 @tailwind base;
 @tailwind components;
@@ -17,11 +18,73 @@ body {
   scroll-behavior: smooth;
   height: 100%;
   width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background-image: url('../assets/images/image.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+/* span {
+  font-family: 'Anton', sans-serif;
+} */
+
+.menu {
+  transition: transform 0.5s ease;
 }
 
 .burger div {
   width: 25px;
   height: 3px;
-  margin: 3px 0;
+  margin: 5px 0;
   background-color: #f3f3f3;
+}
+
+.capsules {
+  display: grid;
+  grid-template-columns: 1fr;
+  place-content: center;
+}
+
+@media (min-width: 760px) {
+  .capsules {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .capsules {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.overlay,
+.modalWindow {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 1s ease, visibility 1s ease;
+}
+
+.overlay.visible,
+.modalWindow.visible {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition-delay: 0s;
+  background-color: rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(3px);
+}
+
+.hover {
+  transition: transform 0.5s ease;
+}
+
+.btn:hover .hover {
+  transform: translateY(0%) !important;
+}
+
+.btn:hover button {
+  color: #000;
 }

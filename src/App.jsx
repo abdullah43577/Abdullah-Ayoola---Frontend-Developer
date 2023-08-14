@@ -1,15 +1,13 @@
-import Header from './components/Head/Header';
-import Body from './components/Body';
-import Footer from './components/Footer';
+import Header from './Components/Header/Header';
+import Main from './Components/Body/Main';
+import Footer from './Components/Footer/Footer';
 
-const App = () => {
+export default function App() {
   return (
     <>
       <Header />
-      <Body />
+      <Main />
       <Footer />
     </>
   );
-};
-
-export default App;
+}
