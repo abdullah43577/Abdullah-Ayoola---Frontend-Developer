@@ -5,6 +5,8 @@ import rustyRocket from '../../assets/images/rustyRocket.jpg';
 import unknownImg from '../../assets/images/unknown.jpg';
 import Modal from './Modal';
 import Filter from './Filter';
+import { filterTypes, filterValues } from '../helper';
+import Pagination from '../Pagination';
 
 export const modalContext = createContext();
 
@@ -33,7 +35,6 @@ export default function Main() {
         const res = await fetch('https://api.spacexdata.com/v3/capsules');
         const data = await res.json();
         setCapsules(data);
-        console.log(data);
       } catch (err) {
         console.log(err);
       }
@@ -47,7 +48,6 @@ export default function Main() {
   };
 
   useEffect(() => {
-    console.log('running');
     filterCapsules('', null, null, null);
   }, [capsules]);
 
@@ -55,7 +55,6 @@ export default function Main() {
     if (statusValue) {
       filterCapsules(null, statusValue, null, null);
     } else if (typeValue) {
-      console.log('code received', typeValue);
       filterCapsules(null, null, typeValue, null);
     } else if (launchDateValue) {
       filterCapsules(null, null, null, launchDateValue);
@@ -64,46 +63,44 @@ export default function Main() {
 
   const filterCapsules = function (filter, statusFilter, typeFilter, launchFilter) {
     if (capsules.length) {
-      console.log('runing status');
       if (filter === '') {
         setFilteredItems(capsules);
       } else if (statusFilter) {
         switch (statusFilter) {
           case 'active':
-            const active = capsules.filter((obj) => obj.status === 'active');
+            const active = filterValues(capsules, 'status', 'active');
             setFilteredItems(active);
             break;
 
           case 'retired':
-            const retired = capsules.filter((obj) => obj.status === 'retired');
+            const retired = filterValues(capsules, 'status', 'retired');
             setFilteredItems(retired);
             break;
 
           case 'unknown':
-            const unknown = capsules.filter((obj) => obj.status === 'unknown');
+            const unknown = filterValues(capsules, 'status', 'unknown');
             setFilteredItems(unknown);
             break;
 
           default: // destroyed
-            const destroyed = capsules.filter((obj) => obj.status === 'destroyed');
+            const destroyed = filterValues(capsules, 'status', 'destroyed');
             setFilteredItems(destroyed);
             break;
         }
       } else if (typeFilter) {
-        console.log('typeFilter');
         switch (typeFilter) {
           case 'Dragon 1.0':
-            const dragon1 = capsules.filter((obj) => obj.type.toLowerCase() === 'dragon 1.0'.toLowerCase());
+            const dragon1 = filterTypes(capsules, 'type', 'dragon 1.0');
             setFilteredItems(dragon1);
             break;
 
           case 'Dragon 1.1':
-            const dragon2 = capsules.filter((obj) => obj.type.toLowerCase() === 'dragon 1.1'.toLowerCase());
+            const dragon2 = filterTypes(capsules, 'type', 'dragon 1.1');
             setFilteredItems(dragon2);
             break;
 
           case 'Dragon 2.0': // dragon 2.0
-            const dragon3 = capsules.filter((obj) => obj.type.toLowerCase() === 'dragon 2.0'.toLowerCase());
+            const dragon3 = filterTypes(capsules, 'type', 'dragon 2.0');
             setFilteredItems(dragon3);
             break;
 
@@ -111,7 +108,13 @@ export default function Main() {
             break;
         }
       } else if (launchFilter) {
-        console.log('launchFilter');
+        switch (launchFilter) {
+          case '1/15/1970':
+            const launch1 = filterLaunches(capsules, 'original_launch_unix', '1/15/1970');
+            setFilteredItems(launch1);
+          default:
+            break;
+        }
       }
     }
   };
@@ -160,7 +163,9 @@ export default function Main() {
     <modalContext.Provider value={{ modalWindow, setModalWindow, truncate, currentData, capsules, filterStatus }}>
       <main>
         <Filter />
-        <section className="capsules gap-[2rem] px-8">{newData && newData}</section>
+
+        <Pagination capsulesArr={newData} />
+
         <Modal />
         <div className={`overlay absolute top-0 left-0 bottom-0 z-[1000] h-full w-full ${modalWindow && 'visible'}`} onClick={() => setModalWindow(false)}></div>
       </main>

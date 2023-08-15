@@ -1,24 +1,17 @@
 import { useContext } from 'react';
 import { modalContext } from './Main';
+import { formatDate, capitalize } from '../helper';
 
 export default function Filter() {
   const { capsules, filterStatus } = useContext(modalContext);
   const uniqueStatus = [...new Set(capsules.map((obj) => obj.status))];
   const uniqueType = [...new Set(capsules.map((obj) => obj.type))];
-  const uniqueLaunchDate = [...new Set(capsules.map((obj) => obj.original_launch_unix))];
-
-  const capitalize = function (str) {
-    return str.charAt(0).toUpperCase() + str.slice(1);
-  };
-
-  const formatDate = function (date) {
-    return new Date(date).toLocaleDateString();
-  };
+  const uniqueLaunchDate = [...new Set(capsules.map((obj) => obj.original_launch_unix && formatDate(obj.original_launch_unix)))];
 
   return (
     <section className="filter flex items-center flex-col gap-3 w-full justify-center my-8">
       <h2 className="text-white text-4xl font-bold">Filter By:</h2>
-      <div className="flex flex-col lg:flex-row items-center gap-8">
+      <div className="flex flex-col md:flex-row items-center gap-8">
         <div className="status">
           <label htmlFor="status" className="block mb-2 text-xl">
             Status
@@ -39,7 +32,7 @@ export default function Filter() {
           <select name="launchDate" className="w-[150px] p-3 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700" onChange={(e) => filterStatus(null, null, e.target.value)}>
             {uniqueLaunchDate.map((value, i) => (
               <option key={i} value={value}>
-                {formatDate(value)}
+                {value}
               </option>
             ))}
           </select>

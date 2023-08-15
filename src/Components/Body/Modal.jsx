@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { modalContext } from './Main';
+import { formatDate } from '../helper';
 
 export default function Modal() {
   const { modalWindow, truncate, currentData } = useContext(modalContext);
@@ -7,10 +8,6 @@ export default function Modal() {
 
   useEffect(() => console.log('currentData', currentData), []);
   useEffect(() => console.log('currentData2', currentData), [modalWindow]);
-
-  const formatDate = function (date) {
-    return new Date(date).toLocaleDateString();
-  };
 
   useEffect(() => {
     if (modalWindow && currentData) {
