@@ -53,7 +53,7 @@ export default function Navbar() {
           </g>
         </svg>
 
-        <div className={`menu ${!isOpen ? 'translate-x-[100%]' : 'translate-x-[0%]'} fixed bg-[#000] top-0 right-0 p-8 h-full w-[50%]`}>
+        <div className={`menu ${!isOpen ? 'translate-x-[100%]' : 'translate-x-[0%]'} fixed bg-[#000] top-0 right-0 p-8 h-full w-[50%] lg:w-[30%]`}>
           <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 384 512" className="fa-2x cursor-pointer" onClick={closeMenu}>
             <path
               fill="white"
